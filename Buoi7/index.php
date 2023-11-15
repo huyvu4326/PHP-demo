@@ -25,7 +25,6 @@
 
 ?>
 
-
 <table border>
     <thead>
         <th>STT</th>
