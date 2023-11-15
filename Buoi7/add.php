@@ -1,6 +1,11 @@
 <?php
     include("connect.php");
 
+    $hoVaTen = '';
+    $khoa = '';
+    $ngaySinh = '';
+    $lopId = '';
+
     $errHoVaTen = '';
     $errKhoa = '';
     $errNgaySinh = '';
@@ -17,32 +22,44 @@
     }
 
     if(isset($_POST["submit"])){
-        $hoVaTen = $_POST["hoVaTen"];
-        $khoa = $_POST["khoa"];
+        $hoVaTen = trim($_POST["hoVaTen"]);
+        $khoa = trim($_POST["khoa"]);
         $ngaySinh = $_POST["ngaySinh"];
         $lopId = $_POST["lopId"];
-        print_r([$hoVaTen, $khoa, $ngaySinh, $lopId]);
+        // print_r([$hoVaTen, $khoa, $ngaySinh, $lopId]);
+
+        //Kiểm tra dữ liệu
+        if(empty($hoVaTen)){
+            $errHoVaTen = "Vui lòng nhập họ và tên";
+        }
+        if(empty($khoa)){
+            $errKhoa = "Vui lòng nhập khoa";
+        }
+        if(empty($ngaySinh)){
+            $errNgaySinh = "Vui lòng nhập ngày sinh";
+        }
     }
 
 ?>
 
 <form action="add.php" method="post">
     <label for="">Họ và tên</label>
-    <input type="text" name="hoVaTen" id=""><br>
-    <span style="coler:red"><?= $errHoVaTen ?></span><br>
+    <input type="text" name="hoVaTen" id="" value ="<?= $hoVaTen?>"><br>
+    <span style="color:red"><?= $errHoVaTen ?></span><br>
 
     <label for="">Khoa</label>
-    <input type="text" name="khoa" id=""><br>
-    <span style="coler:red"><?= $errKhoa ?></span><br>
+    <input type="text" name="khoa" id="" value ="<?= $khoa?>"><br>
+    <span style="color:red"><?= $errKhoa ?></span><br>
 
     <label for="">Ngày sinh</label>
-    <input type="date" name="ngaySinh" id=""><br>
-    <span style="coler:red"><?= $errNgaySinh ?></span><br>
+    <input type="date" name="ngaySinh" id="" value ="<?= $ngaySinh?>"><br>
+    <span style="color:red"><?= $errNgaySinh ?></span><br>
     
     <select name="lopId" id="">
         <?php
             foreach ($listLop as $lop) {
-                echo "<option value='{$lop["id"]}'>{$lop["tenLop"]}</option>";
+                $selected = ($lop["id"] == $lopId) ? "selected" : "";
+                echo "<option value='{$lop["id"]}' $selected>{$lop["tenLop"]}</option>";
             }
         ?>
     </select><br>
