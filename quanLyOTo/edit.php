@@ -1,4 +1,5 @@
 <?php
+
 include("connect.php");
 
 $id = "";
@@ -22,6 +23,8 @@ if (isset($_GET["id"])) {
         try {
             $sql = "SELECT * FROM xe WHERE id = $id";
             $result = $connect->query($sql);
+            // echo $result;
+            // die();
             if ($result) {
                 $listXe = $result->fetch(PDO::FETCH_ASSOC);
                 if ($listXe) {
@@ -42,21 +45,17 @@ if (isset($_GET["id"])) {
         }
     }
 }
-
 if (isset($_POST["submit"])) {
     $id = $_POST["id"];
     $tenLoaiXe = trim($_POST["tenLoaiXe"]);
     $xuatXu = trim($_POST["xuatXu"]);
     $idDanhMuc = $_POST["idDanhMuc"];
     $mauSac = trim($_POST["mauSac"]);
-    
-    // File upload handling
     if ($_FILES['hinhAnh']['error'] == 0) {
         $hinhAnh = $_FILES['hinhAnh']['name'];
         $target = "uploads/" . basename($hinhAnh);
         move_uploaded_file($_FILES['hinhAnh']['tmp_name'], $target);
     }
-
     if (empty($tenLoaiXe)) {
         $errTenLoaiXe = "Vui lòng nhập tên xe";
         $isCheck = false;
@@ -65,15 +64,9 @@ if (isset($_POST["submit"])) {
         $errXuatXu = "Vui lòng nhập xuất xứ xe";
         $isCheck = false;
     }
-
     if ($isCheck) {
-        // Update the "xe" table
         $sql = "UPDATE xe SET tenLoaiXe = '$tenLoaiXe', xuatXu = '$xuatXu', idDanhMuc = '$idDanhMuc', mauSac = '$mauSac', hinhAnh = '$hinhAnh' WHERE id = $id";
-        
-        // Execute the SQL query
         $result = $connect->query($sql);
-
-        // Check for success
         if ($result) {
             echo "Cập nhật sản phẩm thành công";
             header('Location: index.php');
@@ -83,7 +76,6 @@ if (isset($_POST["submit"])) {
     }
 }
 
-// Fetch danh muc options
 $sql = "SELECT * FROM danhmuc";
 $option = "";
 $result = $connect->query($sql);
